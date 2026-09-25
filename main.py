@@ -1,6 +1,10 @@
-def main():
-    print("Hello from fastapi-devtalles!")
+from fastapi import FastAPI
+
+app = FastAPI(
+    title="Mini Blog",
+)
 
 
-if __name__ == "__main__":
-    main()
+@app.get("/")
+def read_root():
+    return {"message": "Bienevenido a Mini Blog!"}

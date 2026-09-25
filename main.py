@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 
 app = FastAPI(
     title="Mini Blog",
@@ -33,5 +33,21 @@ def read_root():
 
 
 @app.get("/posts")
-def list_posts():
-    return {"data": BLOG_POSTS}
+def list_posts(
+    query: str | None = Query(
+        default=None,
+        description="Filtra los posts por título o contenido.",
+    ),
+):
+
+    results = BLOG_POSTS
+
+    if query:
+        results = [
+            post
+            for post in BLOG_POSTS
+            if query.lower() in post["title"].lower()
+            or query.lower() in post["content"].lower()
+        ]
+
+    return {"data": results, "query": query}
